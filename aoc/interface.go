@@ -35,6 +35,7 @@ func (a *AocService) Solve(day uint8, input []byte) (string, string, error) {
 }
 
 // adds a day handler to AocService handler. Adding a day, that already exist, overwrites it
-func (a *AocService) AddHandler(h ProblemHandler) {
+func (a *AocService) AddHandler(h ProblemHandler) *AocService {
 	a.handlers[h.GetDay()] = h
+	return a
 }

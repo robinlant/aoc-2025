@@ -44,7 +44,8 @@ func main() {
 		exit(fmt.Sprintf("error reading file '%s': %s", args.Input, err.Error()), 1)
 	}
 
-	a := aoc.NewAocService()
+	a := aoc.NewAocService().
+		AddHandler(&aoc.Day1Solver{})
 
 	s1, s2, err := a.Solve(args.Day, i)
 
@@ -52,6 +53,6 @@ func main() {
 		exit(err.Error(), 1)
 	}
 
-	fmt.Printf("Day %d solutions:\n\n", args.Day)
-	fmt.Printf("\tProblem 1: %s\n\tProblem 2:%s", s1, s2)
+	fmt.Printf("Day %d\n\n", args.Day)
+	fmt.Printf("Problem 1: %s\nProblem 2: %s\n", s1, s2)
 }
