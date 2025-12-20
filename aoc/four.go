@@ -1,7 +1,6 @@
 package aoc
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -20,10 +19,9 @@ func (d *Day4Solver) SolveOne(i []byte) (string, error) {
 	sum := 0
 	for rIndex, row := range matrix {
 		for cIndex, char := range row {
-			if char == '@' &&
+			if char == roll &&
 				countAdjacentRolls(matrix, rIndex, cIndex) < 4 {
 				sum++
-				fmt.Printf("row: %d, col: %d\n", rIndex+1, cIndex+1)
 			}
 		}
 	}
@@ -32,7 +30,35 @@ func (d *Day4Solver) SolveOne(i []byte) (string, error) {
 }
 
 func (d *Day4Solver) SolveTwo(i []byte) (string, error) {
-	return "", nil
+	matrix := getD4Matrix(i)
+	type point struct {
+		Row int
+		Col int
+	}
+
+	sum := 0
+	for true {
+		rmPoints := []point{}
+
+		for rIndex, row := range matrix {
+			for cIndex, char := range row {
+				if char == roll &&
+					countAdjacentRolls(matrix, rIndex, cIndex) < 4 {
+					rmPoints = append(rmPoints, point{Row: rIndex, Col: cIndex})
+					sum++
+				}
+			}
+		}
+
+		if len(rmPoints) == 0 {
+			break
+		}
+		for _, p := range rmPoints {
+			matrix[p.Row][p.Col] = empty
+		}
+	}
+
+	return strconv.Itoa(sum), nil
 }
 
 func getD4Matrix(i []byte) [][]byte {
