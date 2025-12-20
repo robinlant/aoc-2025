@@ -47,7 +47,8 @@ func main() {
 	a := aoc.NewAocService().
 		AddHandler(&aoc.Day1Solver{}).
 		AddHandler(&aoc.Day2Solver{}).
-		AddHandler(&aoc.Day3Solver{})
+		AddHandler(&aoc.Day3Solver{}).
+		AddHandler(&aoc.Day4Solver{})
 
 	s1, s2, err := a.Solve(args.Day, i)
 

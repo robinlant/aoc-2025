@@ -7,16 +7,17 @@ import (
 
 func rows(input []byte) iter.Seq[[]byte] {
 	return func(yield func([]byte) bool) {
-		r := []byte{}
-		for i := range input {
-			if input[i] != '\n' {
-				r = append(r, input[i])
-				continue
+		start := 0
+		for i := 0; i < len(input); i++ {
+			if input[i] == '\n' {
+				if !yield(input[start:i]) {
+					return
+				}
+				start = i + 1
 			}
-			if !yield(r) {
-				return
-			}
-			r = []byte{}
+		}
+		if start < len(input) {
+			yield(input[start:])
 		}
 	}
 }
