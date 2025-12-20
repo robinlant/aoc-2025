@@ -31,7 +31,31 @@ func (d *Day5Solver) SolveOne(i []byte) (string, error) {
 }
 
 func (d *Day5Solver) SolveTwo(i []byte) (string, error) {
-	return "", nil
+	ranges, _, err := parseDay5input(i)
+	if err != nil {
+		return "", fmt.Errorf("failed parsind day5 input %s", err.Error())
+	}
+
+	merged := map[int]bool{}
+	for i := 0; i < len(ranges)-1; i++ {
+		for j := i + 1; j < len(ranges); j++ {
+			if ranges[i].CanMerge(ranges[j]) {
+				ranges[j] = ranges[i].Merge(ranges[j])
+				merged[i] = true
+				break
+			}
+		}
+	}
+
+	var count uint64
+	for i, r := range ranges {
+		if merged[i] {
+			continue
+		}
+		count += r.Stop - r.Start + 1
+	}
+
+	return strconv.FormatUint(count, 10), nil
 }
 
 type indexRange struct {
@@ -41,6 +65,20 @@ type indexRange struct {
 
 func (i indexRange) Includes(n uint64) bool {
 	return i.Start <= n && n <= i.Stop
+}
+
+func (i1 indexRange) CanMerge(i2 indexRange) bool {
+	return i1.Start <= i2.Stop && i2.Start <= i1.Stop
+}
+
+func (i1 indexRange) Merge(i2 indexRange) indexRange {
+	if !i1.CanMerge(i2) {
+		panic(fmt.Errorf("index range %v cannot merge index range %v", i1, i2))
+	}
+	return indexRange{
+		Start: min(i1.Start, i2.Start),
+		Stop:  max(i1.Stop, i2.Stop),
+	}
 }
 
 func indexRangeFromBytes(s []byte) (indexRange, error) {
