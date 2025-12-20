@@ -5,6 +5,14 @@ import (
 	"iter"
 )
 
+func rowsSlice(input []byte) [][]byte {
+	res := [][]byte{}
+	for r := range rows(input) {
+		res = append(res, r)
+	}
+	return res
+}
+
 func rows(input []byte) iter.Seq[[]byte] {
 	return func(yield func([]byte) bool) {
 		start := 0
