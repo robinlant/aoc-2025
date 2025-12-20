@@ -41,4 +41,4 @@ func digiByteToInt(b byte) (int, error) {
 	return int(b - '0'), nil
 }
 
-func unused[V any](v ...V) {}
+func unused(v ...any) {}
