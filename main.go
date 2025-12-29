@@ -50,7 +50,8 @@ func main() {
 		AddHandler(&aoc.Day3Solver{}).
 		AddHandler(&aoc.Day4Solver{}).
 		AddHandler(&aoc.Day5Solver{}).
-		AddHandler(&aoc.Day6Solver{})
+		AddHandler(&aoc.Day6Solver{}).
+		AddHandler(&aoc.Day8Solver{})
 
 	s1, s2, err := a.Solve(args.Day, i)
 

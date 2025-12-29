@@ -73,11 +73,12 @@ func (d *Day1Solver) SolveTwo(i []byte) (string, error) {
 
 	for _, v := range inst {
 		for range v.Count {
-			if v.Direction == 'R' {
+			switch v.Direction {
+			case 'R':
 				currentPos++
-			} else if v.Direction == 'L' {
+			case 'L':
 				currentPos--
-			} else {
+			default:
 				return "", fmt.Errorf("unknown direction %c", v.Direction)
 			}
 

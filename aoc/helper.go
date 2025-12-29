@@ -3,7 +3,33 @@ package aoc
 import (
 	"fmt"
 	"iter"
+	"strconv"
 )
+
+type parseFunc[K, T any] func(K) (T, error)
+
+func parseGeneric[K, T any](src []K, f parseFunc[K, T]) ([]T, error) {
+	res := make([]T, 0, len(src))
+	for _, v := range src {
+		r, err := f(v)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, r)
+	}
+	return res, nil
+}
+
+func parseBytesIntoInt(src [][]byte) ([]int, error) {
+	f := func(b []byte) (int, error) {
+		i, err := strconv.ParseInt(string(b), 10, 32)
+		if err != nil {
+			return 0, err
+		}
+		return int(i), nil
+	}
+	return parseGeneric(src, f)
+}
 
 func rowsSlice(input []byte) [][]byte {
 	res := [][]byte{}
